@@ -1,0 +1,19 @@
+步骤：
+1. 在 SourceTree 中点击「Terminal」按钮
+
+路径：顶部菜单 Repository → Open in Terminal
+或者直接点工具栏的终端图标 >_
+2. 执行以下命令：
+
+Bash
+# 删除所有已经被跟踪的文件，但保留在本地磁盘
+git rm -r --cached .
+3. 然后重新添加所有文件（这时 .gitignore 会生效）：
+
+Bash
+git add .
+4. 提交并推送：
+
+Bash
+git commit -m "清理已跟踪的文件，应用 .gitignore 规则"
+git push
