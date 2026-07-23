@@ -1,0 +1,84 @@
+# ====================
+# Qt 自动生成的文件
+# ====================
+*.pro.user
+*.pro.user.*
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+rcc_*.cpp
+moc_predefs.h
+.qmake.stash
+
+# ====================
+# 编译输出目录
+# ====================
+build/
+build-*/
+Debug/
+Release/
+debug/
+release/
+*.o
+*.obj
+*.exe
+*.app
+*.dll
+*.lib
+*.a
+*.so
+*.dylib
+*.exp
+*.ilk
+*.pdb
+*.manifest
+*.res
+*.sbr
+*.tlh
+*.tli
+
+# ====================
+# IDE 配置文件
+# ====================
+# Qt Creator
+*.autosave
+*.user
+*.creator.user*
+*.config
+*.cflags
+*.cxxflags
+*.includes
+*.files
+
+# Visual Studio
+.vs/
+*.sdf
+*.opensdf
+*.opendb
+*.vcxproj.user
+
+# VS Code
+.vscode/
+
+# CLion
+.idea/
+*.iml
+cmake-build-*/
+
+# ====================
+# 系统文件
+# ====================
+.DS_Store
+Thumbs.db
+*.~lock.*
+*.swp
+*.swo
+*~
+
+# ====================
+# 其他
+# ====================
+*.log
+*.tmp
+*.bak
+*.cache
