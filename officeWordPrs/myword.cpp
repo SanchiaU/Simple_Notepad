@@ -38,7 +38,8 @@ MyChild *MyWord::createMyChild(){
     return child;
 }
 
-void MyWord::createActions(){//创建菜单操作
+void MyWord::createActions(){
+    //创建菜单操作
     //新建
     newAct = new QAction(QIcon(srcpaths+"/filenew.png"),tr("新建(&N)"),this);
     newAct->setShortcuts(QKeySequence::New);
@@ -69,7 +70,39 @@ void MyWord::createActions(){//创建菜单操作
     printAct->setToolTip("打印");
     printAct->setStatusTip(tr("打印当前word文档."));
     connect(printAct,SIGNAL(triggered()),this,SLOT(filePrint()));
+    //打印预览
+    printPreviewAct = new QAction(tr("打印预览..."),this);
+    printPreviewAct->setStatusTip(tr("预览当前需打印word文档."));
+    connect(printPreviewAct,SIGNAL(triggered()),this,SLOT(filePrintPreview()));
 
+    //编辑菜单动作
+    //撤销
+    undoAct = new QAction(QIcon(srcpaths+"/editundo.png"),tr("撤销(&U)"),this);
+    undoAct->setShortcuts(QKeySequence::Undo);
+    undoAct->setToolTip("撤销");
+    undoAct->setStatusTip(tr("撤销当前Word文档操作."));
+    connect(undoAct,SIGNAL(triggered()),this,SLOT(undo()));
+
+    //重做
+    redoAct = new QAction(QIcon(srcpaths+"/editredo.png"),tr("重做(&U)"),this);
+    redoAct->setShortcuts(QKeySequence::Undo);
+    redoAct->setToolTip("重做");
+    redoAct->setStatusTip(tr("回复之前的Word文档操作."));
+    connect(redoAct,SIGNAL(triggered()),this,SLOT(redo()));
+
+    //剪切
+    cutAct = new QAction(QIcon(srcpaths+"/editcut.png"),tr("剪切(&T)"),this);
+    cutAct->setShortcuts(QKeySequence::Cut);
+    cutAct->setToolTip("剪切");
+    cutAct->setStatusTip(tr("剪切当前选中的内容，将它存放到剪贴板."));
+    connect(cutAct,SIGNAL(triggered()),this,SLOT(Cut()));
+
+    //复制
+    copyAct = new QAction(QIcon(srcpaths+"/editcopy.png"),tr("复制(&C)"),this);
+    copyAct->setShortcuts(QKeySequence::Copy);
+    copyAct->setToolTip("复制");
+    copyAct->setStatusTip(tr("复制当前所选中的内容，将它存放到剪贴板."));
+    connect(copyAct,SIGNAL(triggered()),this,SLOT(copy()));
 
 }
 void MyWord::createMenus(){
