@@ -32,7 +32,7 @@ public:
     ~MyWord();
 protected:
     void closeEvent(QCloseEvent *event);
-private:
+private slots:
     void fileNew();
     void fileOpen();
     void fileSave();
@@ -47,6 +47,7 @@ private:
     void copy();
     void paste();
     void about();
+    void aboutQt();
 
     void textBold();
     void textItalic();

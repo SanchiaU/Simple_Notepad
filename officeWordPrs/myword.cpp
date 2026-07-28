@@ -192,7 +192,7 @@ void MyWord::createActions(){
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setToolTip("剪切");
     cutAct->setStatusTip(tr("剪切当前选中的内容，将它存放到剪贴板."));
-    connect(cutAct,SIGNAL(triggered()),this,SLOT(Cut()));
+    connect(cutAct,SIGNAL(triggered()),this,SLOT(cut()));
 
     //复制
     copyAct = new QAction(QIcon(srcpaths+"/editcopy.png"),tr("复制(&C)"),this);
@@ -291,7 +291,7 @@ void MyWord::createActions(){
 
     closeAllAct = new QAction(tr("关闭所有(&A)"),this);
     closeAllAct->setStatusTip(tr("关闭活动word文档所有子窗口."));
-    connect(closeAct,SIGNAL(triggered()),mdiArea,SLOT(closeActiveAllSubWindows()));
+    connect(closeAllAct,SIGNAL(triggered()),mdiArea,SLOT(closeAllSubWindows()));
 
     tileAct = new QAction(tr("平铺(&C)"));
     tileAct->setStatusTip(tr("平铺子窗口."));
@@ -513,6 +513,11 @@ void MyWord::cut(){
     if(activeMyChild())
         activeMyChild()->cut();
 }
+void MyWord::copy()
+{
+    if (activeMyChild())
+        activeMyChild()->copy();
+}
 void MyWord::paste(){
     if(activeMyChild())
         activeMyChild()->paste();
@@ -621,4 +626,8 @@ void MyWord::printPreview(QPrinter *printer){
 }
 void MyWord::about(){
     QMessageBox::about(this,tr("关于"),tr("此软件是基于Qt5实现的文字处理软件！！！"));
+}
+void MyWord::aboutQt()
+{
+    QMessageBox::aboutQt(this, tr("关于Qt"));
 }
