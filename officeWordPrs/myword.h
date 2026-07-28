@@ -7,6 +7,11 @@
 #include<QPrintPreviewDialog>
 #include <QSignalMapper>
 #include <QAction>
+#include <QMdiArea>
+#include<QMdiSubWindow>
+#include <QMessageBox>  // 为 aboutQt() 函数
+#include <QFileInfo>    // 为 findMyChild() 函数
+#include <QTextCursor>  // 如果用到 textCursor()
 
 #include "mychild.h"
 class MyChild;
@@ -66,7 +71,7 @@ private:
     void colorChanged(const QColor &c);
     void alignmentChanged(Qt::Alignment a);
     MyChild *activeMyChild();
-    QMidSubWindow *findMyChild(const QString &filename);
+    QMdiSubWindow *findMyChild(const QString &filename);
 
     QMdiArea *mdiArea;
     QSignalMapper *windowMapper;
@@ -84,7 +89,9 @@ private:
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
     QToolBar *formatToolBar;
-    QToolBar *ToolBar;
+    QToolBar *comboToolBar;//
+    QFontComboBox *comboFont;
+    QComboBox *comboStyle;
     QComboBox *comboSize ;
 
     //菜单动作
