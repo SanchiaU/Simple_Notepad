@@ -124,7 +124,7 @@ MyChild *MyWord::createMyChild(){
 
     mdiArea->addSubWindow(child);
     connect(child,SIGNAL(copyAvailable(bool)),cutAct,SLOT(setEnabled(bool)));
-    connect(child,SIGNAL(copyAvailable(bool)),cutAct,SLOT(setEnabled(bool)));
+    connect(child,SIGNAL(copyAvailable(bool)),copyAct,SLOT(setEnabled(bool)));
 
     return child;
 }
@@ -425,7 +425,7 @@ void MyWord::createToolBars(){
     comboFont = new QFontComboBox();
     comboToolBar->addWidget(comboFont);
     comboFont->setStatusTip("更改字体");
-    connect(comboFont,SIGNAL(activated(int)),this,SLOT(textFamily(QString)));
+    connect(comboFont,SIGNAL(activated(QString)),this,SLOT(textFamily(QString)));
 
     comboSize = new QComboBox();
     comboToolBar->addWidget(comboSize);
