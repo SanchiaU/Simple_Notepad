@@ -52,16 +52,15 @@ void MyWord::closeEvent(QCloseEvent *event){
 
 }
 
-void MyWord::updateMenus(){
-    bool hasMyChild = (activeMyChild()!=0);
+void MyWord::updateMenus()
+{
+    const bool hasMyChild = (activeMyChild() != nullptr);
+
     saveAct->setEnabled(hasMyChild);
     saveAsAct->setEnabled(hasMyChild);
     printAct->setEnabled(hasMyChild);
     printPreviewAct->setEnabled(hasMyChild);
-
     pasteAct->setEnabled(hasMyChild);
-    closeAct->setEnabled(hasMyChild);
-    closeAllAct->setEnabled(hasMyChild);
     closeAct->setEnabled(hasMyChild);
     closeAllAct->setEnabled(hasMyChild);
     tileAct->setEnabled(hasMyChild);
@@ -70,19 +69,24 @@ void MyWord::updateMenus(){
     previousAct->setEnabled(hasMyChild);
     separatorAct->setVisible(hasMyChild);
 
-    //打开文档并且选中内容
-    bool hasSelection = (activeMyChild()&&activeMyChild()->textCursor().hasSelection());
+    // 格式类：有文档就能用，与选区无关
+    boldAct->setEnabled(hasMyChild);
+    italicAct->setEnabled(hasMyChild);
+    underlineAct->setEnabled(hasMyChild);
+    leftAlignAct->setEnabled(hasMyChild);
+    centerAct->setEnabled(hasMyChild);
+    rightAlignAct->setEnabled(hasMyChild);
+    justifyAct->setEnabled(hasMyChild);
+    colorAct->setEnabled(hasMyChild);
+
+    if (comboFont)  comboFont->setEnabled(hasMyChild);
+    if (comboSize)  comboSize->setEnabled(hasMyChild);
+    if (comboStyle) comboStyle->setEnabled(hasMyChild);
+
+    // 只有这两项真的需要选区
+    const bool hasSelection = hasMyChild && activeMyChild()->textCursor().hasSelection();
     cutAct->setEnabled(hasSelection);
     copyAct->setEnabled(hasSelection);
-
-    boldAct->setEnabled(hasSelection);
-    italicAct->setEnabled(hasSelection);
-    underlineAct->setEnabled(hasSelection);
-    leftAlignAct->setEnabled(hasSelection);
-    centerAct->setEnabled(hasSelection);
-    rightAlignAct->setEnabled(hasSelection);
-    justifyAct->setEnabled(hasSelection);
-    colorAct->setEnabled(hasSelection);
 }
 
 void MyWord::updateWindowMenu(){
@@ -113,7 +117,7 @@ void MyWord::updateWindowMenu(){
         QAction *action = windowMenu->addAction(text);
         action->setCheckable(true);
         action->setChecked(child==activeMyChild());
-        connect(action,SIGNAL(triggerred),windowMapper,SLOT(map()));
+        connect(action,SIGNAL(triggered()),windowMapper,SLOT(map()));
         windowMapper->setMapping(action,windows.at(i));
     }
     enabledText();
@@ -123,8 +127,11 @@ MyChild *MyWord::createMyChild(){
     MyChild *child = new MyChild;
 
     mdiArea->addSubWindow(child);
-    connect(child,SIGNAL(copyAvailable(bool)),cutAct,SLOT(setEnabled(bool)));
-    connect(child,SIGNAL(copyAvailable(bool)),copyAct,SLOT(setEnabled(bool)));
+    //connect(child,SIGNAL(copyAvailable(bool)),cutAct,SLOT(setEnabled(bool)));
+    //connect(child,SIGNAL(copyAvailable(bool)),copyAct,SLOT(setEnabled(bool)));
+    connect(child, &QTextEdit::copyAvailable,  this, &MyWord::updateMenus);
+    connect(child, &QTextEdit::selectionChanged, this, &MyWord::updateMenus);
+
 
     return child;
 }
@@ -182,7 +189,7 @@ void MyWord::createActions(){
 
     //重做
     redoAct = new QAction(QIcon(srcpaths+"/editredo.png"),tr("重做(&U)"),this);
-    redoAct->setShortcuts(QKeySequence::Undo);
+    redoAct->setShortcuts(QKeySequence::Redo);
     redoAct->setToolTip("重做");
     redoAct->setStatusTip(tr("恢复之前的Word文档操作."));
     connect(redoAct,SIGNAL(triggered()),this,SLOT(redo()));
@@ -203,7 +210,7 @@ void MyWord::createActions(){
 
     //粘贴
     pasteAct = new QAction(QIcon(srcpaths+"/editpaste.png"),tr("粘贴(&C)"),this);
-    pasteAct->setShortcuts(QKeySequence::Copy);
+    pasteAct->setShortcuts(QKeySequence::Paste);
     pasteAct->setToolTip("粘贴");
     pasteAct->setStatusTip(tr("粘贴当前所选中的内容."));
     connect(pasteAct,SIGNAL(triggered()),this,SLOT(paste()));
@@ -317,7 +324,7 @@ void MyWord::createActions(){
     //【帮助】菜单
     aboutAct = new QAction(tr("关于(&A)"),this);
     aboutAct->setStatusTip("关于Office Word相关信息");
-    connect(aboutAct,SIGNAL(triggered()),this,SLOT(aboutQt()));
+    connect(aboutAct,SIGNAL(triggered()),this,SLOT(about()));
 
     aboutQtAct = new QAction(tr("关于Qt(&Q)"),this);
     aboutQtAct->setStatusTip("关于Qt库相关信息");
@@ -339,7 +346,7 @@ void MyWord::createMenus(){
     fileMenu->addAction(exitAct);
 
     //【编辑】菜单
-    editMenu = menuBar()->addMenu(tr("编辑(&F)"));
+    editMenu = menuBar()->addMenu(tr("编辑(&E)"));
     editMenu->addAction(undoAct);
     editMenu->addAction(redoAct);
     editMenu->addSeparator();

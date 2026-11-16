@@ -20,8 +20,10 @@ bool MyChild::loadFile(const QString &fileName){
             return false;
 
         QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))   //
+            return false;
         QByteArray data = file.readAll();
-
+        file.close();
         QTextCodec *codec = Qt::codecForHtml(data);
         QString str = codec->toUnicode(data);
 
@@ -32,7 +34,10 @@ bool MyChild::loadFile(const QString &fileName){
             this->setPlainText(str);
         }
         setCurrentFile(fileName);
-        connect(document(),SIGNAL(contentsChange()),this,SLOT(documentWasModified()));
+        //connect(document(),SIGNAL(contentsChange(int,int,int)),this,SLOT(documentWasModified()));
+        // MyChild 构造函数里
+        connect(document(), &QTextDocument::contentsChange, this, &MyChild::documentWasModified);
+        // documentWasModified() 签名可以保持无参（新式语法允许槽参数少于信号）
     }
     return true;
 }
@@ -46,7 +51,7 @@ bool MyChild::save(){
 }
 
 bool MyChild::saveAs(){
-    QString fileName = QFileDialog::getSaveFileName(this,tr("另存为"),curFile,tr("HTML 文档(*.html *.html);;所有文件(*.*)"));
+    QString fileName = QFileDialog::getSaveFileName(this,tr("另存为"),curFile,tr("HTML 文档(*.html *.htm);;所有文件(*.*)"));
     if(fileName.isEmpty())return false;
     return saveFile(fileName);
 }

@@ -91,9 +91,9 @@ private:
     QToolBar *editToolBar;
     QToolBar *formatToolBar;
     QToolBar *comboToolBar;//
-    QFontComboBox *comboFont;
-    QComboBox *comboStyle;
-    QComboBox *comboSize ;
+    QFontComboBox *comboFont= nullptr;
+    QComboBox *comboStyle= nullptr;
+    QComboBox *comboSize = nullptr;
 
     //菜单动作
     QAction *newAct;
